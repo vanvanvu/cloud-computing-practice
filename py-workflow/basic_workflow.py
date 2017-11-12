@@ -1,5 +1,6 @@
 #!/bin/python
 
+import random
 from workflow.engine import GenericWorkflowEngine
 from functools import wraps
 from workflow.errors import HaltProcessing
@@ -16,6 +17,7 @@ IF_ELSE,    # Simple `if-else` statement that accepts 3 arguments.
 
 CMP,        # Simple function to support python comparisons directly from a
             # workflow engine.
+WHILE,
 )
 
 def print_data(obj, eng):
@@ -35,6 +37,12 @@ def append_from(key):
         obj.append(eng.extra_data[key])
         print "new data:", obj
     return _append_from
+
+def append_random():
+    def _append_random(obj, eng):
+        obj.append(random.randint(1, 100))
+        print "new data:", obj
+    return _append_random
 
 def interrupt_workflow(obj, eng):
     """Raise the `HaltProcessing` exception.
@@ -82,6 +90,10 @@ my_workflow_2 = [
     # ) # END IF_ELSE
 ]
 
+my_workflow_3 = [
+    FOR(range(5), 'tmp', [append_random()])
+    #WHILE(isinstance("key",int), [append_random()])
+]
 
 class MyObject(object):
     def __init__(self, data):
@@ -123,8 +135,13 @@ def run_workflow_2():
 	            print "Done!", my_engine_2.objects
 	            break
 
+def run_workflow_3():
+    my_engine_3 = GenericWorkflowEngine()
+    my_engine_3.setWorkflow(my_workflow_3)
+    my_engine_3.process([[]])
+
 def main():
-	run_workflow_2()
+	run_workflow_3()
 
 if __name__ == '__main__':
 	main()

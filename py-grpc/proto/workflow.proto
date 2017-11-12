@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+// The greeting service definition.
+service Workflow {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+  // Sends another greeting
+  rpc Running (RunningRequest) returns (RunningResult) {}
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1;
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}
+
+// The response message containing the greetings
+message RunningRequest {
+  string message = 1;
+}
+
+// The response message containing the greetings
+message RunningResult {
+  string message = 1;
+}
