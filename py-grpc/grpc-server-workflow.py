@@ -2,7 +2,7 @@
 
 from concurrent import futures
 import time
-
+import json
 import grpc
 
 import workflow_pb2
@@ -22,7 +22,9 @@ my_workflow_1 = [
     print_data
 ]
 
-def run_workflow():
+def run_workflow(message):
+  jsonObj = json.loads(message)
+  print "Workflow input header message %s" %(jsonObj['Header'])   
   my_engine = GenericWorkflowEngine()
   my_engine.setWorkflow(my_workflow_1)
   my_engine.process([[], [0, 1]])
@@ -34,9 +36,13 @@ class Workflow(workflow_pb2_grpc.WorkflowServicer):
 
   def Running(self, request, context):
     print "Running ..."
-    run_workflow()
+    run_workflow(request.message)
     time.sleep(10)
-    return workflow_pb2.RunningResult(message='Finish workflow')
+    jsonObj = {
+      "Header": "RunningResult",
+      "Body": "Finish workflow"
+    }
+    return workflow_pb2.RunningResult(message=json.dumps(jsonObj))
 
 
 def serve():
