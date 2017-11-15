@@ -15,12 +15,12 @@ class WorkflowStub(object):
       channel: A grpc.Channel.
     """
     self.SayHello = channel.unary_unary(
-        '/Workflow/SayHello',
+        '/workflow.Workflow/SayHello',
         request_serializer=workflow__pb2.HelloRequest.SerializeToString,
         response_deserializer=workflow__pb2.HelloReply.FromString,
         )
     self.Running = channel.unary_unary(
-        '/Workflow/Running',
+        '/workflow.Workflow/Running',
         request_serializer=workflow__pb2.RunningRequest.SerializeToString,
         response_deserializer=workflow__pb2.RunningResult.FromString,
         )
@@ -59,5 +59,5 @@ def add_WorkflowServicer_to_server(servicer, server):
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
-      'Workflow', rpc_method_handlers)
+      'workflow.Workflow', rpc_method_handlers)
   server.add_generic_rpc_handlers((generic_handler,))

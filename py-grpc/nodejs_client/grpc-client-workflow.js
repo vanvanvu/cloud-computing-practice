@@ -1,10 +1,10 @@
-var PROTO_PATH = __dirname + '/../proto/hello.proto';
+var PROTO_PATH = __dirname + '/../proto/workflow.proto';
 
 var grpc = require('grpc');
-var hello_proto = grpc.load(PROTO_PATH).hello;
+var workflow_proto = grpc.load(PROTO_PATH).workflow;
 
 function main() {
-  var client = new hello_proto.Greeter('localhost:50052',
+  var client = new workflow_proto.Workflow('localhost:50051',
                                        grpc.credentials.createInsecure());
   var user;
   if (process.argv.length >= 3) {

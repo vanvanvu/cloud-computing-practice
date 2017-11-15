@@ -32,6 +32,7 @@ def run_workflow(message):
 class Workflow(workflow_pb2_grpc.WorkflowServicer):
 
   def SayHello(self, request, context):
+    print "Recieve message: %s" % (request.name)
     return workflow_pb2.HelloReply(message='Hello, %s!' % request.name)
 
   def Running(self, request, context):
