@@ -24,10 +24,11 @@ my_workflow_1 = [
 
 def run_workflow(message):
   jsonObj = json.loads(message)
-  print "Workflow input header message %s" %(jsonObj['Header'])   
+  print "Workflow input header message %s" %(jsonObj['Header'])
+  data = jsonObj['Body']   
   my_engine = GenericWorkflowEngine()
   my_engine.setWorkflow(my_workflow_1)
-  my_engine.process([[], [0, 1]])
+  my_engine.process(data)
 
 class Workflow(workflow_pb2_grpc.WorkflowServicer):
 
@@ -41,7 +42,10 @@ class Workflow(workflow_pb2_grpc.WorkflowServicer):
     time.sleep(10)
     jsonObj = {
       "Header": "RunningResult",
-      "Body": "Finish workflow"
+      "Body": {
+        "Code": 200,
+        "Infor": "Finish workflow"
+      }
     }
     return workflow_pb2.RunningResult(message=json.dumps(jsonObj))
 
