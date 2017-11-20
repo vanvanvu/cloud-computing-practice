@@ -11,6 +11,8 @@ import workflow_pb2_grpc
 from workflow.engine import GenericWorkflowEngine
 from functools import wraps
 
+from wf_model import workflow_model_1
+
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
   
 
@@ -27,7 +29,7 @@ def run_workflow(message):
   print "Workflow input header message %s" %(jsonObj['Header'])
   data = jsonObj['Body']   
   my_engine = GenericWorkflowEngine()
-  my_engine.setWorkflow(my_workflow_1)
+  my_engine.setWorkflow(workflow_model_1())
   my_engine.process(data)
 
 class Workflow(workflow_pb2_grpc.WorkflowServicer):
